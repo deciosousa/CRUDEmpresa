@@ -36,7 +36,7 @@ namespace CRUDEmpresa.Data
         }
 
         //*** DEPARTAMENTOS***
-        public async Task<Departamento[]> GetAllDepartamentos(bool incluirFuncionarios = false)
+        public async Task<Departamento[]> GetAllDepartamentos(bool incluirFuncionario = false)
         {
             IQueryable<Departamento> query = _contexto.Departamentos;
 
@@ -45,7 +45,7 @@ namespace CRUDEmpresa.Data
             return await query.ToArrayAsync();
         }
 
-        public async Task<Departamento> GetDepartamentoById(int id, bool incluirFuncionarios = false)
+        public async Task<Departamento> GetDepartamentoById(int id, bool incluirFuncionario = false)
         {
             IQueryable<Departamento> query = _contexto.Departamentos;
 
@@ -54,7 +54,7 @@ namespace CRUDEmpresa.Data
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Departamento[]> GetDepartamentosByNome(string nome, bool incluirDepartamento = false)
+        public async Task<Departamento[]> GetDepartamentosByNome(string nome, bool incluirFuncionario = false)
         {
             IQueryable<Departamento> query = _contexto.Departamentos
                 .Include(d => d.Funcionarios);
@@ -70,9 +70,8 @@ namespace CRUDEmpresa.Data
 
         public async Task<Funcionario[]> GetAllFuncionarios(bool incluirFuncionario = false)
         {
-            IQueryable<Funcionario> query = _contexto.Funcionarios
-                .Include(f => f.DepartamentoID)
-                .Include(f => f.Departamento);
+            IQueryable<Funcionario> query = _contexto.Funcionarios;
+                //.Include(f => f.NomeFunc);
 
             query = query.AsNoTracking().OrderBy(f => f.ID);
 
@@ -81,9 +80,8 @@ namespace CRUDEmpresa.Data
 
         public async Task<Funcionario> GetFuncionarioById(int id, bool incluirFuncionario = false)
         {
-            IQueryable<Funcionario> query = _contexto.Funcionarios
-                .Include(f => f.DepartamentoID)
-                .Include(f => f.Departamento);
+            IQueryable<Funcionario> query = _contexto.Funcionarios;
+                //.Include(f => f.ID);
 
             query = query.AsNoTracking().OrderBy(f => f.ID);
 
@@ -92,9 +90,8 @@ namespace CRUDEmpresa.Data
 
         public async Task<Funcionario[]> GetFuncionariosByNome(string nome, bool incluirFuncionario = false)
         {
-            IQueryable<Funcionario> query = _contexto.Funcionarios
-                .Include(f => f.DepartamentoID)
-                .Include(f => f.Departamento);
+            IQueryable<Funcionario> query = _contexto.Funcionarios;
+                //.Include(f => f.NomeFunc);
 
             query = query.AsNoTracking()
                          .Where(f => f.NomeFunc.Contains(nome))

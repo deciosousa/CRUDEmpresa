@@ -14,8 +14,6 @@ namespace CRUDEmpresa.Data
 
         Task<bool> SaveChangeAsync();
 
-        //*** atenção para a necessidade de excluir  = false do trecho abaixo
-
         Task<Departamento[]> GetAllDepartamentos(bool incluirDepartamento = false);
         Task<Departamento> GetDepartamentoById(int id, bool incluirDepartamento = false);
         Task<Departamento[]> GetDepartamentosByNome(string nome, bool incluirDepartamento = false);

@@ -15,19 +15,21 @@ namespace CRUDEmpresa.Controllers
     [ApiController]
     public class FuncionarioController : ControllerBase
     {
-        private readonly EmpresaContexto _context;
+        private readonly IEmpresaRepositorio _repo;
 
-        public FuncionarioController(EmpresaContexto context)
+        public FuncionarioController(IEmpresaRepositorio repo)
         {
-            _context = context;
+            _repo = repo;
         }
         // GET: api/<FuncionarioController>
         [HttpGet]
-        public ActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                return Ok(new Funcionario());
+                var funcionarios = await _repo.GetAllFuncionarios(true);
+
+                return Ok(funcionarios);
             }
             catch(Exception ex)
             {
@@ -37,55 +39,83 @@ namespace CRUDEmpresa.Controllers
 
         // GET api/<FuncionarioController>/5
         [HttpGet("{id}", Name = "GetFuncionario")]
-        public ActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok("value");
+            try
+            {
+                var funcionarios = await _repo.GetFuncionarioById(id, true);
+
+                return Ok(funcionarios);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro: {ex}");
+            }
         }
 
         // POST api/<FuncionarioController>
         [HttpPost]
-        public ActionResult Post(Funcionario model)
+        public async Task<IActionResult> Post(Funcionario model)
         {
             try
             {
-                _context.Funcionarios.Add(model);
-                _context.SaveChanges();
+                _repo.Add(model);
 
-                return Ok("SUCESSO!");
+                if (await _repo.SaveChangeAsync())
+
+                    return Ok("SUCESSO!");
             }
             catch (Exception ex)
             {
                 return BadRequest($"Erro: {ex}");
             }
+            return BadRequest("Não Salvou");
         }
 
         // PUT api/<FuncionarioController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, Funcionario model)
+        public async Task<IActionResult> Put(int id, Funcionario model)
         {
             try
             {
-                if(_context.Funcionarios.AsNoTracking().FirstOrDefault(
-                    f => f.ID ==id
-                    ) != null)
+                var funcionario = await _repo.GetFuncionarioById(id);
+                if (funcionario != null)
                 {
-                    _context.Funcionarios.Update(model);
-                    _context.SaveChanges();
+                    _repo.Update(model);
 
-                    return Ok("SUCESSO!");
+                    if (await _repo.SaveChangeAsync())
+
+                        return Ok("SUCESSO!");
                 }
-                return Ok("Não Encontrado!");
             }
             catch (Exception ex)
             {
                 return BadRequest($"Erro: {ex}");
             }
+            return Ok("Não Encontrado!");
         }
 
         // DELETE api/<FuncionarioController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                var funcionario = await _repo.GetFuncionarioById(id);
+                if (funcionario != null)
+                {
+                    _repo.Delete(funcionario);
+
+                    if (await _repo.SaveChangeAsync())
+
+                        return Ok("Sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro: {ex}");
+            }
+            return BadRequest($"Não Deletado!");
         }
     }
 }
