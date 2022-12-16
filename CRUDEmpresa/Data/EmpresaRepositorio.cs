@@ -36,7 +36,7 @@ namespace CRUDEmpresa.Data
         }
 
         //*** DEPARTAMENTOS***
-        public async Task<Departamento[]> GetAllDepartamentos(bool incluirFuncionario = false)
+        public async Task<Departamento[]> GetAllDepartamentos(bool incluirDepartamento = false)
         {
             IQueryable<Departamento> query = _contexto.Departamentos;
 
@@ -45,23 +45,23 @@ namespace CRUDEmpresa.Data
             return await query.ToArrayAsync();
         }
 
-        public async Task<Departamento> GetDepartamentoById(int id, bool incluirFuncionario = false)
+        public async Task<Departamento> GetDepartamentoById(int id, bool incluirDepartamento = false)
         {
             IQueryable<Departamento> query = _contexto.Departamentos;
 
             query = query.AsNoTracking().OrderBy(d => d.ID);
 
-            return await query.FirstOrDefaultAsync();
+            return await query.FirstOrDefaultAsync(d => d.ID == id);
         }
 
-        public async Task<Departamento[]> GetDepartamentosByNome(string nome, bool incluirFuncionario = false)
+        public async Task<Departamento[]> GetDepartamentosByNome(string nome, bool incluirDepartamento = false)
         {
-            IQueryable<Departamento> query = _contexto.Departamentos
-                .Include(d => d.Funcionarios);
+            IQueryable<Departamento> query = _contexto.Departamentos;
+                //.Include(d => d.Funcionarios);
 
             query = query.AsNoTracking()
                          .Where(d => d.Nome.Contains(nome))
-                         .OrderBy(f => f.ID);
+                         .OrderBy(d => d.ID);
 
             return await query.ToArrayAsync();
         }

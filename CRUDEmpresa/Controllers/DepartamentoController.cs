@@ -44,9 +44,9 @@ namespace CRUDEmpresa.Controllers
         {
             try
             {
-                var departamento = await _repo.GetDepartamentoById(id, true);
+                var departamentos = await _repo.GetDepartamentoById(id, true);
 
-                return Ok(departamento);
+                return Ok(departamentos);
             }
             catch (Exception ex)
             {
