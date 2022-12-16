@@ -33,10 +33,6 @@ namespace CRUDEmpresa
 
             services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
 
-                //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                //.AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling =
-                //Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
             services.AddControllers();
         }
 

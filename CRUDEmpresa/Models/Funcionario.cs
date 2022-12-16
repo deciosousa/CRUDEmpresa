@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CRUDEmpresa.Models
 {
-    public class Funcionario
+    public class Funcionario 
     {
         public int ID { get; set; }
         public string NomeFunc { get; set; }

@@ -81,7 +81,6 @@ namespace CRUDEmpresa.Data
         public async Task<Funcionario> GetFuncionarioById(int id, bool incluirFuncionario = false)
         {
             IQueryable<Funcionario> query = _contexto.Funcionarios;
-                //.Include(f => f.ID);
 
             query = query.AsNoTracking().OrderBy(f => f.ID);
 
@@ -91,7 +90,6 @@ namespace CRUDEmpresa.Data
         public async Task<Funcionario[]> GetFuncionariosByNome(string nome, bool incluirFuncionario = false)
         {
             IQueryable<Funcionario> query = _contexto.Funcionarios;
-                //.Include(f => f.NomeFunc);
 
             query = query.AsNoTracking()
                          .Where(f => f.NomeFunc.Contains(nome))
