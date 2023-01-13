@@ -31,6 +31,7 @@ namespace CRUDEmpresa
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+
             services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
 
             services.AddControllers();
@@ -47,6 +48,8 @@ namespace CRUDEmpresa
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {

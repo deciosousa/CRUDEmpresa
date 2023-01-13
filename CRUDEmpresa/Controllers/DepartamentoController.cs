@@ -64,7 +64,7 @@ namespace CRUDEmpresa.Controllers
                 
                 if(await _repo.SaveChangeAsync())
 
-                return Ok("SUCESSO!");
+                return Ok(new { message = "Sucesso" });
             }
             catch (Exception ex)
             {
@@ -80,13 +80,13 @@ namespace CRUDEmpresa.Controllers
             try
             {
                 var departamento = await _repo.GetDepartamentoById(id);
-                if(departamento != null)
+                if(departamento == null) return NotFound();
                 {
                     _repo.Update(model);
                     
                     if(await _repo.SaveChangeAsync())
                    
-                    return Ok("SUCESSO!");
+                    return Ok(new { message = "Sucesso" });
                 }
             }
             catch (Exception ex)
@@ -103,13 +103,13 @@ namespace CRUDEmpresa.Controllers
             try
             {
                 var departamento = await _repo.GetDepartamentoById(id);
-                if (departamento != null)
+                if (departamento == null) return NotFound();
                 {
                     _repo.Delete(departamento);
 
                     if (await _repo.SaveChangeAsync())
 
-                        return Ok("Sucesso!");
+                        return Ok(new { message = "Deletado" });
                 }
             }
             catch (Exception ex)

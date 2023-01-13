@@ -63,7 +63,7 @@ namespace CRUDEmpresa.Controllers
 
                 if (await _repo.SaveChangeAsync())
 
-                    return Ok("SUCESSO!");
+                    return Ok(new { message = "Sucesso" });
             }
             catch (Exception ex)
             {
@@ -79,13 +79,13 @@ namespace CRUDEmpresa.Controllers
             try
             {
                 var funcionario = await _repo.GetFuncionarioById(id);
-                if (funcionario != null)
+                if (funcionario == null) return NotFound();
                 {
                     _repo.Update(model);
 
                     if (await _repo.SaveChangeAsync())
 
-                        return Ok("SUCESSO!");
+                        return Ok(new { message = "Sucesso" });
                 }
             }
             catch (Exception ex)
@@ -102,13 +102,13 @@ namespace CRUDEmpresa.Controllers
             try
             {
                 var funcionario = await _repo.GetFuncionarioById(id);
-                if (funcionario != null)
+                if (funcionario == null) return NotFound();
                 {
                     _repo.Delete(funcionario);
 
                     if (await _repo.SaveChangeAsync())
 
-                        return Ok("Sucesso!");
+                        return Ok(new { message = "Deletado" });
                 }
             }
             catch (Exception ex)
