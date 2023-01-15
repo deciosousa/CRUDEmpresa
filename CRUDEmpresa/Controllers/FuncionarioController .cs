@@ -63,7 +63,7 @@ namespace CRUDEmpresa.Controllers
 
                 if (await _repo.SaveChangeAsync())
 
-                    return Ok(new { message = "Sucesso" });
+                    return Ok(model);
             }
             catch (Exception ex)
             {

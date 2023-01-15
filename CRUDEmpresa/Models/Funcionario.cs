@@ -9,8 +9,8 @@ namespace CRUDEmpresa.Models
     {
         public int ID { get; set; }
         public string NomeFunc { get; set; }
-        public DateTime DataContratacao { get; set; }
-        public Departamento Departamento { get; set; }
-        public int DepartamentoID { get; set; }
+        public string DataContratacao { get; set; }
+        public List<Departamento> Departamento { get; set; }
+        public string NomeDepto { get; set; }
     }
 }
