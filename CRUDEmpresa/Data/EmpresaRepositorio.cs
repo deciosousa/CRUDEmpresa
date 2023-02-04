@@ -1,7 +1,5 @@
 ﻿using CRUDEmpresa.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,8 +11,11 @@ namespace CRUDEmpresa.Data
 
         public EmpresaRepositorio(EmpresaContexto contexto)
         {
+            //injeção de dependência: trazendo o _contexto para a classe EmpresaRepositorio 
             _contexto = contexto;
         }
+
+        // criando os métodos Add, Update e Delete usando parâmetros do tipo genérico, permitindo que a classe seja passada no momento sua instanciação
         public void Add<T>(T entity) where T : class
         {
             _contexto.Add(entity);
@@ -35,35 +36,32 @@ namespace CRUDEmpresa.Data
             return (await _contexto.SaveChangesAsync()) > 0;
         }
 
+        // criando os métodos de leitura (Get), de acordo com a classe: Departamento || Funcionario
+
         //*** DEPARTAMENTOS***
         public async Task<Departamento[]> GetAllDepartamentos(bool incluirDepartamento = false)
         {
+            //definindo que apenas os elementos necessários sejam retornados
             IQueryable<Departamento> query = _contexto.Departamentos;
 
-            query = query.AsNoTracking().OrderBy(d => d.ID);
-
+            // AsNotracking = indica ao contexto que o objeto da consulta não será modificado, ou seja, é apenas para leitura, isso resulta em ganho de performance.
+            
+            // OrderBy = método usado para organizar os elementos da consulta, neste caso, por nome. 
+            query = query.AsNoTracking().OrderBy(d => d.Nome);
+            
+            //convertendo a resposta da requisição em uma matriz (array). 
             return await query.ToArrayAsync();
         }
 
         public async Task<Departamento> GetDepartamentoById(int id, bool incluirDepartamento = false)
         {
             IQueryable<Departamento> query = _contexto.Departamentos;
-
+            
+            //organizando os elementos da consulta por id
             query = query.AsNoTracking().OrderBy(d => d.ID);
 
+            //definindo que a consulta deve retornar apenas o primeiro elemento encontrado
             return await query.FirstOrDefaultAsync(d => d.ID == id);
-        }
-
-        public async Task<Departamento[]> GetDepartamentosByNome(string nome, bool incluirDepartamento = false)
-        {
-            IQueryable<Departamento> query = _contexto.Departamentos;
-                //.Include(d => d.Funcionarios);
-
-            query = query.AsNoTracking()
-                         .Where(d => d.Nome.Contains(nome))
-                         .OrderBy(d => d.ID);
-
-            return await query.ToArrayAsync();
         }
 
         //***FUNCIONÁRIOS****
@@ -71,10 +69,11 @@ namespace CRUDEmpresa.Data
         public async Task<Funcionario[]> GetAllFuncionarios(bool incluirFuncionario = false)
         {
             IQueryable<Funcionario> query = _contexto.Funcionarios;
-                //.Include(f => f.NomeFunc);
 
+            //organizando os elementos da consulta por id
             query = query.AsNoTracking().OrderBy(f => f.ID);
 
+            //convertendo a resposta da requisição em uma matriz (array).
             return await query.ToArrayAsync();
         }
 
@@ -82,20 +81,11 @@ namespace CRUDEmpresa.Data
         {
             IQueryable<Funcionario> query = _contexto.Funcionarios;
 
+            //organizando os elementos da consulta por id
             query = query.AsNoTracking().OrderBy(f => f.ID);
 
+            //definindo que a consulta deve retornar apenas o primeiro elemento encontrado
             return await query.FirstOrDefaultAsync(f => f.ID == id);
-        }
-
-        public async Task<Funcionario[]> GetFuncionariosByNome(string nome, bool incluirFuncionario = false)
-        {
-            IQueryable<Funcionario> query = _contexto.Funcionarios;
-
-            query = query.AsNoTracking()
-                         .Where(f => f.NomeFunc.Contains(nome))
-                         .OrderBy(f => f.ID);
-
-            return await query.ToArrayAsync();
         }
     }
 }

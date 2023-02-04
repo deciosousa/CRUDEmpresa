@@ -26,6 +26,9 @@ namespace CRUDEmpresa
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            //Permite usar o contexto dentro das Controllers 
+
             services.AddDbContext<EmpresaContexto>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
