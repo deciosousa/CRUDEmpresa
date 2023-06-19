@@ -2,88 +2,86 @@
 using CRUDEmpresa.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CRUDEmpresa.Migrations
+
+namespace CRUDEmpresa.Migrations;
+
+[DbContext(typeof(EmpresaContexto))]
+partial class EmpresaContextoModelSnapshot : ModelSnapshot
 {
-    [DbContext(typeof(EmpresaContexto))]
-    partial class EmpresaContextoModelSnapshot : ModelSnapshot
+    protected override void BuildModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .UseIdentityColumns()
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+        modelBuilder
+            .UseIdentityColumns()
+            .HasAnnotation("Relational:MaxIdentifierLength", 128)
+            .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("CRUDEmpresa.Models.Departamento", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+        modelBuilder.Entity("CRUDEmpresa.Models.Departamento", b =>
+            {
+                b.Property<int>("ID")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int")
+                    .UseIdentityColumn();
 
-                    b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Nome")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                b.HasKey("ID");
 
-                    b.ToTable("Departamentos");
-                });
+                b.ToTable("Departamentos");
+            });
 
-            modelBuilder.Entity("CRUDEmpresa.Models.Funcionario", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+        modelBuilder.Entity("CRUDEmpresa.Models.Funcionario", b =>
+            {
+                b.Property<int>("ID")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int")
+                    .UseIdentityColumn();
 
-                    b.Property<string>("DataContratacao")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("DataContratacao")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NomeDepto")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("NomeDepto")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NomeFunc")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("NomeFunc")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                b.HasKey("ID");
 
-                    b.ToTable("Funcionarios");
-                });
+                b.ToTable("Funcionarios");
+            });
 
-            modelBuilder.Entity("DepartamentoFuncionario", b =>
-                {
-                    b.Property<int>("DepartamentoID")
-                        .HasColumnType("int");
+        modelBuilder.Entity("DepartamentoFuncionario", b =>
+            {
+                b.Property<int>("DepartamentoID")
+                    .HasColumnType("int");
 
-                    b.Property<int>("FuncionariosID")
-                        .HasColumnType("int");
+                b.Property<int>("FuncionariosID")
+                    .HasColumnType("int");
 
-                    b.HasKey("DepartamentoID", "FuncionariosID");
+                b.HasKey("DepartamentoID", "FuncionariosID");
 
-                    b.HasIndex("FuncionariosID");
+                b.HasIndex("FuncionariosID");
 
-                    b.ToTable("DepartamentoFuncionario");
-                });
+                b.ToTable("DepartamentoFuncionario");
+            });
 
-            modelBuilder.Entity("DepartamentoFuncionario", b =>
-                {
-                    b.HasOne("CRUDEmpresa.Models.Departamento", null)
-                        .WithMany()
-                        .HasForeignKey("DepartamentoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("DepartamentoFuncionario", b =>
+            {
+                b.HasOne("CRUDEmpresa.Models.Departamento", null)
+                    .WithMany()
+                    .HasForeignKey("DepartamentoID")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("CRUDEmpresa.Models.Funcionario", null)
-                        .WithMany()
-                        .HasForeignKey("FuncionariosID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.HasOne("CRUDEmpresa.Models.Funcionario", null)
+                    .WithMany()
+                    .HasForeignKey("FuncionariosID")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 #pragma warning restore 612, 618
-        }
     }
 }
